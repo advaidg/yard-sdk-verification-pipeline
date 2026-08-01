@@ -1,0 +1,14 @@
+system_id: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a
+node_id: node-00a4838e
+transport_mode: centralized
+input_mode: http
+output_mode: sync
+memory:
+  reads:
+  - classification_result
+  writes:
+  - sentiment_result
+  scope: system
+failure:
+  mode: retry
+  max_retries: 3

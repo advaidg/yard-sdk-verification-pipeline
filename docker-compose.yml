@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test:
+      - CMD
+      - redis-cli
+      - ping
+      interval: 5s
+      timeout: 3s
+  orchestrator:
+    image: agentyard/orchestrator:latest
+    ports:
+    - 8080:8080
+    environment:
+      YARD_SYSTEM_ID: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a
+      YARD_TRANSPORT: http
+      YARD_REDIS_URL: redis://redis:6379
+      YARD_ENGINE_TYPE: chain_executor
+      YARD_OTLP_ENDPOINT: http://jaeger:4318/v1/traces
+    depends_on:
+      redis:
+        condition: service_healthy
+  triage-classifier:
+    image: 742851378787.dkr.ecr.us-east-1.amazonaws.com/agentyard-triage-classifier:latest
+    environment:
+      YARD_TRANSPORT: http
+      YARD_SYSTEM_ID: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a
+      YARD_NODE_ID: node-0661e459
+      YARD_REDIS_URL: redis://redis:6379
+      YARD_PORT: '9000'
+      YARD_OTLP_ENDPOINT: http://jaeger:4318/v1/traces
+      YARD_LLM_PROVIDER: bedrock
+      YARD_MEMORY: shared_bus
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - python -c "import urllib.request; urllib.request.urlopen('http://localhost:9000/health')"
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    configs:
+    - source: yard_cfg_node-0661e459
+      target: /yard/config.yaml
+  triage-sentiment:
+    image: 742851378787.dkr.ecr.us-east-1.amazonaws.com/agentyard-triage-sentiment:latest
+    environment:
+      YARD_TRANSPORT: http
+      YARD_SYSTEM_ID: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a
+      YARD_NODE_ID: node-00a4838e
+      YARD_REDIS_URL: redis://redis:6379
+      YARD_PORT: '9000'
+      YARD_OTLP_ENDPOINT: http://jaeger:4318/v1/traces
+      YARD_LLM_PROVIDER: bedrock
+      YARD_MEMORY: shared_bus
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - python -c "import urllib.request; urllib.request.urlopen('http://localhost:9000/health')"
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    configs:
+    - source: yard_cfg_node-00a4838e
+      target: /yard/config.yaml
+networks:
+  default:
+    name: yard-sdk-verification-pipeline
+configs:
+  yard_cfg_node-0661e459:
+    file: ./yard-config-node-0661e459.yaml
+  yard_cfg_node-00a4838e:
+    file: ./yard-config-node-00a4838e.yaml
