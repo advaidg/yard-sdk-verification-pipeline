@@ -340,9 +340,10 @@ data:
     \ passthrough\nenvironment: dev\nerror_recovery:\n  circuit_breaker_enabled: true\n\
     \  circuit_breaker_reset_seconds: 60\n  circuit_breaker_threshold: 3\n  dead_letter_queue:\
     \ true\n  global_timeout_seconds: 300\n  max_total_retries: 10\n  on_system_failure:\
-    \ return_partial\ngithub_repo_url: null\nglobal_token: ''\nid: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a\n\
-    memory_config:\n  initial_context: null\n  max_memory_keys: 100\n  memory_ttl_seconds:\
-    \ null\n  open: true\n  persistence: session\n  schema: null\n  strategy: shared_bus\n\
+    \ return_partial\ngithub_repo_url: https://github.com/advaidg/yard-sdk-verification-pipeline\n\
+    global_token: ''\nid: 8788b533-d7b5-4268-a2ba-c6210cfe2d1a\nmemory_config:\n \
+    \ initial_context: null\n  max_memory_keys: 100\n  memory_ttl_seconds: null\n\
+    \  open: true\n  persistence: session\n  schema: null\n  strategy: shared_bus\n\
     \  strict: false\nname: SDK Verification Pipeline\nnamespace: default\nnodes:\n\
     - agent_id: fa08fb4c-86ab-4856-960f-f751b55e551f\n  agent_version: 1.0.0\n  config:\n\
     \    cache_ttl_seconds: null\n    fallback_agent_id: null\n    input_mapping:\
@@ -364,7 +365,7 @@ data:
     \ null\n  merge_strategy: null\n  quality_metric_key: null\n  quality_threshold:\
     \ null\n  reflection_enabled: null\n  reflection_prompt: null\n  routing_mode:\
     \ sequential\n  system_prompt: ''\n  transport_mode: centralized\nowner: dev-admin\n\
-    status: draft\nupdated_at: '2026-08-01T14:56:59.155039Z'\nversion: 1\n"
+    status: draft\nupdated_at: '2026-08-01T16:42:06.217693Z'\nversion: 2\n"
   transport: http
 kind: ConfigMap
 metadata:
